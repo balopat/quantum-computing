@@ -4,9 +4,6 @@ import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import ComplexNumberRectangular._
 
-
-
-
 class ComplexNumberSpec extends FlatSpec with ShouldMatchers {
 
   "A Complex Number" should
