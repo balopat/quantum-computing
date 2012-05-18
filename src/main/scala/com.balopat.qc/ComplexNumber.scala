@@ -1,22 +1,39 @@
 package com.balopat.qc
 
+import scala.math._
 
-case class ComplexNumberRectangular(im: Int, r: Int) {
+case class ComplexNumberCartesian(im: Double, r: Double) {
 
-  def i() = this
+  def i() = ComplexNumberCartesian(r, im)
 
-  def +(b: ComplexNumberRectangular) = ComplexNumberRectangular(im + b.im, r + b.r)
+  def +(b: ComplexNumberCartesian) = ComplexNumberCartesian(im + b.im, r + b.r)
 
-  def +(b: Int) = ComplexNumberRectangular(im, r + b)
+  def +(b: Double) = ComplexNumberCartesian(im, r + b)
 
-  def -(b: ComplexNumberRectangular) = ComplexNumberRectangular(im - b.im, r - b.r)
+  def -(b: ComplexNumberCartesian) = ComplexNumberCartesian(im - b.im, r - b.r)
 
-  def -(b: Int) = ComplexNumberRectangular(im, r - b)
+  def -(b: Double) = ComplexNumberCartesian(im, r - b)
 
-  def *(b: ComplexNumberRectangular) = ComplexNumberRectangular(r*b.im+b.r*im, r*b.r-im*b.im)
+  def *(b: ComplexNumberCartesian) = ComplexNumberCartesian(r * b.im + b.r * im, r * b.r - im * b.im)
+
+  def /(b: Double) = ComplexNumberCartesian(im / b, r / b)
+
+  def /(b: ComplexNumberCartesian): ComplexNumberCartesian = {
+    ComplexNumberCartesian((b.r * im - r * b.im), (r * b.r + im * b.im)) / b.modSquare
+  }
+
+  def modSquare() = im * im + r * r
+
+  def modulus() = sqrt(modSquare)
+
 
 }
 
-object ComplexNumberRectangular {
-  implicit def any2CN(x: Int): ComplexNumberRectangular = ComplexNumberRectangular(x, 0)
+object ComplexNumberCartesian {
+
+  implicit def any2CN(x: Double): ComplexNumberCartesian = ComplexNumberCartesian(0, x)
+
+  implicit def any2CN(x: Int): ComplexNumberCartesian = ComplexNumberCartesian(0, x)
+
+  def ^(a: ComplexNumberCartesian) = ComplexNumberCartesian(-a.im, a.r)
 }
