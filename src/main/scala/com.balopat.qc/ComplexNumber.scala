@@ -4,7 +4,7 @@ import scala.math._
 
 case class ComplexNumberCartesian(im: Double, r: Double) {
 
-  def i() = ComplexNumberCartesian(r, im)
+  def i = ComplexNumberCartesian(r, im)
 
   def +(b: ComplexNumberCartesian) = ComplexNumberCartesian(im + b.im, r + b.r)
 
@@ -22,10 +22,11 @@ case class ComplexNumberCartesian(im: Double, r: Double) {
     ComplexNumberCartesian((b.r * im - r * b.im), (r * b.r + im * b.im)) / b.modSquare
   }
 
-  def modSquare() = im * im + r * r
+  def modSquare = im * im + r * r
 
-  def modulus() = sqrt(modSquare)
+  def modulus = sqrt(modSquare)
 
+  def asPolar = ComplexNumberPolar(modulus, atan(r / im))
 
 }
 
@@ -36,4 +37,9 @@ object ComplexNumberCartesian {
   implicit def any2CN(x: Int): ComplexNumberCartesian = ComplexNumberCartesian(0, x)
 
   def ^(a: ComplexNumberCartesian) = ComplexNumberCartesian(-a.im, a.r)
+}
+
+case class ComplexNumberPolar(ρ: Double, θ: Double) {
+  def asCartesian = ComplexNumberCartesian(ρ * cos(θ), +ρ * sin(θ))
+
 }

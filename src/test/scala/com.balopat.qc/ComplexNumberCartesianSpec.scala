@@ -1,12 +1,11 @@
 package com.balopat.qc
 
-;
-
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import ComplexNumberCartesian._
+import scala.math._
 
-class ComplexNumberSpec extends FlatSpec with ShouldMatchers {
+class ComplexNumberCartesianSpec extends FlatSpec with ShouldMatchers {
 
   "A Complex Number" should
     "add to another Complex Number by components" in {
@@ -33,6 +32,10 @@ class ComplexNumberSpec extends FlatSpec with ShouldMatchers {
     (3.01 i) + 66.99 / 3 should be((3.01 i) + 22.33)
   }
 
+  it should "be able to be converted to polar representation" in {
+    ((1 i) + 1).asPolar should be(ComplexNumberPolar(sqrt(2), Pi / 4))
+  }
+
   "i" should
     "give -1 multiplied by i" in {
     (1 i) * (1 i) should be((0 i) - 1)
@@ -49,7 +52,7 @@ class ComplexNumberSpec extends FlatSpec with ShouldMatchers {
 
   "The modulus for ai + b" should
     "be sqrt(a*a + b*b)" in {
-    ((2 i) + 4).modulus should be(scala.math.sqrt(2 * 2 + 4 * 4))
+    ((2 i) + 4).modulus should be(sqrt(2 * 2 + 4 * 4))
   }
 
   "The conjugate for ai + b" should
