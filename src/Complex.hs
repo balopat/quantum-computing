@@ -1,4 +1,5 @@
-import System.IO
+module Complex where
+
 import Data.List.Split
 
 data Complex = Cartesian Double Double | Polar Double Double deriving (Show) 
@@ -44,30 +45,5 @@ toCartesian (Cartesian r i)   = Cartesian r i
 showPi :: Complex -> String 
 showPi (Polar rho theta) = show(rho) ++ ", " ++ show(theta/pi) ++ "pi" 
 
-main = do
-  print "Specify c1 (complex number) in form a b"   
-  c1String <- getLine
-  
-  print "Specify c2 (complex number) in form a b"   
-  c2String <- getLine
-  
-  let c1 = readComplex c1String  
-  let c2 = readComplex c2String 
-  
-  print $ "c1 + c2: " ++ show(c1 <+> c2)   
-  print $ "c1 - c2 : " ++ show(c1 <-> c2) 
-  print $ "c2 - c1: " ++ show(c2 <-> c1) 
-  print $ "c1 * c2: " ++ show(c1 |*| c2) 
-  print $ "c2 * c1 / c1: " ++ show(c2 |*| c1 </> c1) 
-  print $ "c2 / c1: " ++ show(c2 </> c1) 
-  print $ "modulus c1: " ++ show(modulus c1)
-  print $ "modulus c2: " ++ show(modulus c2)
-  print $ "conj c1: " ++ show(conj c1)
-  print $ "conj c2: " ++ show(conj c2)
-  
-  print $ "toPolar c2: " ++ show(toPolar c2)
-  print $ "toPolar (with pi) c2: " ++ showPi(toPolar c2)
-  print $ "toCartesian toPolar c2: " ++ show(toCartesian(toPolar c2))
-  
   
   

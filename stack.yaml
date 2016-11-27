@@ -1,0 +1,33 @@
+flags: {}
+packages:
+- '.'
+extra-deps:
+- mtl-2.2.1
+- random-1.1
+- text-1.2.2.1
+- happstack-server-7.4.6.2
+- base64-bytestring-1.0.0.1
+- blaze-html-0.8.1.2
+- exceptions-0.8.3
+- extensible-exceptions-0.1.1.4
+- hslogger-1.2.10
+- html-1.0.1.2
+- monad-control-1.0.1.0
+- network-2.6.3.1
+- network-uri-2.6.1.0
+- old-locale-1.0.0.7
+- parsec-3.1.11
+- sendfile-0.7.9
+- syb-0.6
+- system-filepath-0.4.13.4
+- threads-0.5.1.4
+- time-compat-0.1.0.3
+- transformers-base-0.4.4
+- transformers-compat-0.5.1.4
+- utf8-string-1.0.1.1
+- zlib-0.6.1.2
+- blaze-builder-0.4.0.2
+- blaze-markup-0.7.1.0
+- old-time-1.1.0.3
+- stm-2.4.4.1
+resolver: ghc-7.10
