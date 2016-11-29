@@ -5,7 +5,18 @@
   <script src="/static/processing.js"></script>
   <script src="/static/jquery.js"></script>
   <script type="text/javascript">
+
        function drawPoints(id) {
+         $("#complexplane")
+          .attr('unselectable','on')
+          .css({'-moz-user-select':'-moz-none',
+                '-moz-user-select':'none',
+                '-o-user-select':'none',
+                '-khtml-user-select':'none', /* you could also put this in a class */
+                '-webkit-user-select':'none',/* and add the CSS class here instead */
+                '-ms-user-select':'none',
+                'user-select':'none'
+          }).bind('selectstart', function(){ return false; });
          var pjs = Processing.getInstanceById(id);
          $.get("/complex", function(data) {
              console.log(data)
@@ -13,12 +24,26 @@
              pjs.addPoint(point.r, point.i);
         })
        }
+       $(function() {
+
+       })
        </script>
+  <style type="text/css">
+    body {
+       -webkit-touch-callout: none;
+       -webkit-user-select: none;
+       -khtml-user-select: none;
+       -moz-user-select: none;
+       -ms-user-select: none;
+       -o-user-select: none;
+       user-select: none;
+    }
+  </style>
 </head>
 <body>
-  <h1>Processing.js Test</h1>
-  <p>This is my first Processing.js web-based sketch:</p>
-  <canvas  id="mysketch5" data-processing-sources="/static/hello/hello.pde"></canvas>
-  <div id="controller"><button type="button" id="loadPoints" onclick="drawPoints('mysketch5')"></div>
+  <h1>The Complex Plane</h1>
+  <p>Click on the canvas to display complex numbers as vectors! Multiplication of vectors is coming!</p>
+  <canvas  id="complexplane" data-processing-sources="/static/complexplane/complexplane.pde"></canvas>
+  <div id="controller"><button type="button" id="loadPoints" onclick="drawPoints('complexplane')"></div>
 </body>
 </html>
