@@ -6,16 +6,28 @@ import Data.List.Split
 import GHC.Generics
 import Text.JSON.Generic
 import Data.Data (Data, Typeable)
-import qualified Data.Aeson as A
+import Data.Aeson
 
 data MultiplicationRequest = MultiplicationRequest {
     points :: [Complex],
     mulBy :: Complex
-} deriving (Show, Eq, Data, Typeable, Generic, A.ToJSON, A.FromJSON)
+} deriving (Show, Eq, Data, Typeable, Generic, ToJSON)
+
+instance FromJSON MultiplicationRequest where
+  parseJSON = withObject "MultiplicationRequest" $ \o -> do
+    points <- o .: "points"
+    mulBy  <- o .: "mulBy"
+    return (MultiplicationRequest points mulBy)
 
 data Complex =  Cartesian { r:: Double, i::Double } |
                 Polar { rho :: Double, theta::Double}
-                  deriving (Show,Data,Typeable,Eq,Generic, A.ToJSON, A.FromJSON)
+                  deriving (Show,Data,Typeable,Eq,Generic, ToJSON)
+
+instance FromJSON Complex where
+  parseJSON = withObject "Complex" $ \o -> do
+    r <- o.: "r"
+    i <- o.: "i"
+    return (Cartesian r i)
 
 readComplex :: String -> Complex
 readComplex s = let parts = splitOn " " s
