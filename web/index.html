@@ -18,11 +18,29 @@
                 'user-select':'none'
           }).bind('selectstart', function(){ return false; });
          var pjs = Processing.getInstanceById(id);
-         $.get("/complex", function(data) {
+         console.log($("#r").val() + ", " + $("#i").val())
+         a = pjs.getPoints().toArray()
+         for (p in a) { a[p].$self = undefined }
+         multiplicationRequest = {
+           points: a,
+           mulBy: {
+             r: $("#r").val(),
+             i: $("#i").val()
+           }
+         }
+         console.log(multiplicationRequest)
+         console.log(JSON.stringify(multiplicationRequest))
+         $.ajax({
+           url: "/complex",
+           contentType: "application/json",
+           method: "POST",
+           data: JSON.stringify(multiplicationRequest),
+           success: function(data) {
              console.log(data)
              var point = $.parseJSON(data).Cartesian;
              pjs.addPoint(point.r, point.i);
-        })
+            }
+          })
        }
        $(function() {
 
@@ -44,6 +62,8 @@
   <h1>The Complex Plane</h1>
   <p>Click on the canvas to display complex numbers as vectors! Multiplication of vectors is coming!</p>
   <canvas  id="complexplane" data-processing-sources="/static/complexplane/complexplane.pde"></canvas>
-  <div id="controller"><button type="button" id="loadPoints" onclick="drawPoints('complexplane')"></div>
+  <label>r</label> <input id="r" type="text" title="r">
+  <label>i</label> <input id="i" type="text" title="i">
+  <button type="button" id="loadPoints" onclick="drawPoints('complexplane')"> Multiply! </button>
 </body>
 </html>

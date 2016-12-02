@@ -19,8 +19,8 @@ ArrayList points;
  void draw() {
    translate(pxMaxX, pxMaxY);
    scale(1,-1);
-  
-   textFont( createFont("FFScala", 10)); 
+
+   textFont( createFont("FFScala", 10));
 
    background(255,255,255);
    drawPoints();
@@ -29,19 +29,19 @@ ArrayList points;
 
 
  void drawCoordinateSystem() {
-   stroke(0,0,0);   
+   stroke(0,0,0);
    fill(0,0,0);
    line(0, pxMinY, 0, pxMaxY);
    line(pxMinX, 0, pxMaxX, 0);
    scale(1,-1);
    for (int i=pxMinX; i < pxMaxX; i+=pxUnit*gridUnit) {
      if (i != 0) {
-       line(i,2,i,-2);     
+       line(i,2,i,-2);
        text((int)(i/pxUnit),i-5,15);
-       
-       line(2,i,-2,i);     
+
+       line(2,i,-2,i);
        text((int)(-i/pxUnit),5,i+5);
-     }  
+     }
   }
  }
 
@@ -55,6 +55,10 @@ ArrayList points;
 
  void mouseClicked() {
    addPoint((mouseX-trX)/pxUnit,(trY-mouseY)/pxUnit);
+ }
+
+ ArrayList getPoints() {
+    return points;
  }
 
  Point addPoint(float x, float y) {
@@ -74,6 +78,6 @@ ArrayList points;
      ellipse(x * pxUnit,y*pxUnit,2,2);
      scale(1,-1);
      text("["+x+","+y+"]",5+x*pxUnit,5-y*pxUnit);
-     scale(1,-1);   
+     scale(1,-1);
  }
  }

@@ -1,10 +1,16 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE OverloadedStrings, DeriveDataTypeable, DeriveGeneric, DeriveAnyClass #-}
+
 module Complex where
 
 import Data.List.Split
+import GHC.Generics
 import Text.JSON.Generic
+import Data.Data (Data, Typeable)
+import qualified Data.Aeson as A
 
-data Complex = Cartesian { r:: Double, i::Double } |  Polar { rho :: Double, theta::Double} deriving (Show,Data,Typeable)
+data Complex =  Cartesian { r:: Double, i::Double } |
+                Polar { rho :: Double, theta::Double}
+                  deriving (Show,Data,Typeable,Eq,Generic, A.ToJSON, A.FromJSON)
 
 readComplex :: String -> Complex
 readComplex s = let parts = splitOn " " s
