@@ -68,16 +68,16 @@ ArrayList points;
  }
 
  class Point {
-   float x,y;
-   Point(float x, float y) { this.x=x; this.y=y; }
+   float r,i;
+   Point(float x, float y) { this.r=x; this.i=y; }
    void draw() {
      stroke(0,0,0);
-     line(x * pxUnit,y * pxUnit,0,0);
+     line(r * pxUnit, i * pxUnit,0,0);
      stroke(255,0,0);
      fill(255,0,0);
-     ellipse(x * pxUnit,y*pxUnit,2,2);
+     ellipse(r * pxUnit,i*pxUnit,2,2);
      scale(1,-1);
-     text("["+x+","+y+"]",5+x*pxUnit,5-y*pxUnit);
+     text("["+r+","+i+"]",5+r*pxUnit,5-i*pxUnit);
      scale(1,-1);
  }
  }

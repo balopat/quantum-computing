@@ -13,6 +13,9 @@ data MultiplicationRequest = MultiplicationRequest {
     mulBy :: Complex
 } deriving (Show, Eq, Data, Typeable, Generic, ToJSON)
 
+eval :: MultiplicationRequest -> [Complex]
+eval (MultiplicationRequest points mulBy) = map (|*| mulBy) points
+
 instance FromJSON MultiplicationRequest where
   parseJSON = withObject "MultiplicationRequest" $ \o -> do
     points <- o .: "points"

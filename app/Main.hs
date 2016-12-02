@@ -15,22 +15,8 @@ import Happstack.Server.Types
 import Control.Monad.IO.Class (liftIO)
 
 import Data.Maybe
-import qualified Data.Aeson as A
+import Data.Aeson
 
--- put this function in a library somewhere
--- getBody :: ServerPart L.ByteString
--- getBody = do
---     req  <- askRq
---     body <- liftIO $ takeRequestBody req
---     case body of
---         Just rqbody -> return . unBody $ rqbody
---         Nothing     -> return "emptystuff"
-
--- myRoute :: ServerPart Response
--- myRoute = do
---     body <- getBody -- it's a ByteString
---     let unit = fromJust $ A.decode body :: Unit -- how to parse json
---     ok $ toResponse $ A.encode unit
 getBody :: ServerPart L.ByteString
 getBody = do rq <- askRq
              bdy <- liftIO (readMVar (rqBody rq))
@@ -42,7 +28,7 @@ myPolicy = defaultBodyPolicy "/tmp/" 0 1000 1000
 respondTo :: L.ByteString -> Complex
 respondTo body =
   let uBody = L.unpack body
-      grrr = show(A.eitherDecode body :: Either String MultiplicationRequest)
+      grrr = show(eitherDecode body :: Either String MultiplicationRequest)
       bla = trace grrr uBody in
   Cartesian (fromIntegral (length bla))  1
 
