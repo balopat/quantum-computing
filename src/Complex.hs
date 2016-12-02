@@ -8,6 +8,11 @@ import Text.JSON.Generic
 import Data.Data (Data, Typeable)
 import qualified Data.Aeson as A
 
+data MultiplicationRequest = MultiplicationRequest {
+    points :: [Complex],
+    mulBy :: Complex
+} deriving (Show, Eq, Data, Typeable, Generic, A.ToJSON, A.FromJSON)
+
 data Complex =  Cartesian { r:: Double, i::Double } |
                 Polar { rho :: Double, theta::Double}
                   deriving (Show,Data,Typeable,Eq,Generic, A.ToJSON, A.FromJSON)

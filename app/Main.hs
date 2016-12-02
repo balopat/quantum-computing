@@ -14,14 +14,8 @@ import qualified Data.ByteString.Lazy.Char8 as L
 import Happstack.Server.Types
 import Control.Monad.IO.Class (liftIO)
 
-import Data.Data (Data, Typeable)
 import Data.Maybe
 import qualified Data.Aeson as A
-
-data MultiplicationRequest = MultiplicationRequest {
-    points :: [Complex],
-    mulBy :: Complex
-} deriving (Show, Eq, Data, Typeable, Generic, A.ToJSON, A.FromJSON)
 
 -- put this function in a library somewhere
 -- getBody :: ServerPart L.ByteString

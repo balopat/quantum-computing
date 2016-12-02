@@ -5,12 +5,20 @@
 import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
+import Data.Maybe
+import qualified Data.Aeson as A
+import Complex
+import qualified Data.ByteString.Lazy.Char8 as L
 
 main :: IO ()
 main = hspec $ do
-  describe "Prelude.head" $ do
-    it "returns the first element of a list" $ do
-      head [23 ..] `shouldBe` (23 :: Int)
+  describe "MultiplicationRequest" $ do
+    it "should parse from JSON" $ do
+      let jsonString = L.pack "{\"points\":[{\"x\":22.8,\"y\":5.3},{\"x\":17.4,\"y\":-6.7}],\"mulBy\":{\"r\":\"3\",\"i\":\"3\"}}"
+      A.eitherDecode jsonString `shouldBe` Right (MultiplicationRequest [Cartesian 22.8 5.3,
+                                                            Cartesian 17.4 (-6.7)
+                                                              ]
+                                                              (Cartesian 3 3))
 
     it "returns the first element of an *arbitrary* list" $
       property $ \x xs -> head (x:xs) == (x :: Int)
