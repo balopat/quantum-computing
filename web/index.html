@@ -37,8 +37,10 @@
            data: JSON.stringify(multiplicationRequest),
            success: function(data) {
              console.log(data)
-             var point = $.parseJSON(data).Cartesian;
-             pjs.addPoint(point.r, point.i);
+             var points = $.parseJSON(data);
+             for (i in points) {
+               pjs.addPoint(points[i].r, points[i].i);
+             }
             }
           })
        }

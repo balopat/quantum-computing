@@ -24,13 +24,18 @@ instance FromJSON MultiplicationRequest where
 
 data Complex =  Cartesian { r:: Double, i::Double } |
                 Polar { rho :: Double, theta::Double}
-                  deriving (Show,Data,Typeable,Eq,Generic, ToJSON)
+                  deriving (Show,Data,Typeable,Eq,Generic)
 
 instance FromJSON Complex where
   parseJSON = withObject "Complex" $ \o -> do
     r <- o.: "r"
     i <- o.: "i"
     return (Cartesian r i)
+
+instance ToJSON Complex where
+  toJSON (Cartesian r i) = object [
+      "r" .= r,
+      "i"  .= i]
 
 readComplex :: String -> Complex
 readComplex s = let parts = splitOn " " s
