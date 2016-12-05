@@ -20,11 +20,23 @@
 <body>
   <h1>The Complex Plane</h1>
   <p>Click on the canvas to display complex numbers as vectors! Multiplication of vectors is coming!</p>
-  <canvas  id="complexplane" data-processing-sources="/static/complexplane/complexplane.pde"></canvas>
-  <label>r</label> <input id="r" type="text" title="r">
-  <label>i</label> <input id="i" type="text" title="i">
-  <button type="button" id="mulBy" onclick="multiplyPoints()"> Multiply! </button>
-  <button type="button" id="clear" onclick="clearPoints()"> Clear points! </button>
+  <div style="display:inline-table; width:50%">
+    <canvas  id="complexplane" data-processing-sources="/static/complexplane/complexplane.pde"></canvas>
+  </div>
+  <div style="display:inline-table; width:50%">
+  <div>
+    <button type="button" id="clear" onclick="clearPoints()"> Clear points! </button>
+  </div>
+  <div>
+    <div>
+      <label>mulBy.r</label> <input id="mulR" type="text" title="mul.r">
+      <label>mulBy.i</label> <input id="mulI" type="text" title="mul.i">
+    </div>
+    <button type="button" id="mulBy" onclick="multiplyPoints()"> Multiply! </button>
+  </div>
+</div>
+
+
 
 </body>
 </html>

@@ -1,41 +1,14 @@
-{-# LANGUAGE OverloadedStrings, DeriveDataTypeable, DeriveGeneric, DeriveAnyClass #-}
+{-# LANGUAGE OverloadedStrings, DeriveAnyClass #-}
 
 module Complex where
 
 import Data.List.Split
 import GHC.Generics
-import Text.JSON.Generic
-import Data.Data (Data, Typeable)
-import Data.Aeson
 
-data MultiplicationRequest = MultiplicationRequest {
-    points :: [Complex],
-    mulBy :: Complex
-} deriving (Show, Eq, Data, Typeable, Generic, ToJSON)
-
-eval :: MultiplicationRequest -> [Complex]
-eval (MultiplicationRequest points mulBy) = map (|*| mulBy) points
-
-instance FromJSON MultiplicationRequest where
-  parseJSON = withObject "MultiplicationRequest" $ \o -> do
-    points <- o .: "points"
-    mulBy  <- o .: "mulBy"
-    return (MultiplicationRequest points mulBy)
 
 data Complex =  Cartesian { r:: Double, i::Double } |
                 Polar { rho :: Double, theta::Double}
-                  deriving (Show,Data,Typeable,Eq,Generic)
-
-instance FromJSON Complex where
-  parseJSON = withObject "Complex" $ \o -> do
-    r <- o.: "r"
-    i <- o.: "i"
-    return (Cartesian r i)
-
-instance ToJSON Complex where
-  toJSON (Cartesian r i) = object [
-      "r" .= r,
-      "i"  .= i]
+                  deriving (Show,Eq)
 
 readComplex :: String -> Complex
 readComplex s = let parts = splitOn " " s

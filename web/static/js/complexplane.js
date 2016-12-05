@@ -13,8 +13,8 @@ function multiplyPoints() {
    multiplicationRequest = {
      points: a,
      mulBy: {
-       r: parseInt($("#r").val()),
-       i: parseInt($("#i").val())
+       r: parseInt($("#mulR").val()),
+       i: parseInt($("#mulI").val())
      }
    }
    $.ajax({
