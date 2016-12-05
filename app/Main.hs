@@ -26,16 +26,16 @@ getBody = do rq <- askRq
 myPolicy :: BodyPolicy
 myPolicy = defaultBodyPolicy "/tmp/" 0 1000 1000
 
-complexRoute :: ServerPart Response
-complexRoute = do
+multiplicationRoute :: ServerPart Response
+multiplicationRoute = do
       body <- getBody
       ok $ toResponse $ handleMultiplicationRequest body
 
 main :: IO ()
 main = simpleHTTP nullConf $ do decodeBody myPolicy
                                 msum [
-                                   dir "static" $ uriRest $ \s -> serveFile (asContentType "text/html") ("web/static/" ++ trace ("value of s is: " ++ s) s)
-                                  ,dir "complex" complexRoute
+                                   dir "mul" multiplicationRoute
+                                  ,dir "static" $ uriRest $ \s -> serveFile (asContentType "text/html") ("web/static/" ++ s)
                                   ,do method GET
                                       serveFile (asContentType "text/html") "web/index.html"
                                       ]

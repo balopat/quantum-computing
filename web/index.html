@@ -1,53 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hello Web - Processing.js Test</title>
+  <title>ComplexPlane calculations</title>
   <script src="/static/js/processing.js"></script>
   <script src="/static/js/jquery.js"></script>
-  <script type="text/javascript">
-
-       function drawPoints(id) {
-         $("#complexplane")
-          .attr('unselectable','on')
-          .css({'-moz-user-select':'-moz-none',
-                '-moz-user-select':'none',
-                '-o-user-select':'none',
-                '-khtml-user-select':'none', /* you could also put this in a class */
-                '-webkit-user-select':'none',/* and add the CSS class here instead */
-                '-ms-user-select':'none',
-                'user-select':'none'
-          }).bind('selectstart', function(){ return false; });
-         var pjs = Processing.getInstanceById(id);
-         console.log($("#r").val() + ", " + $("#i").val())
-         a = pjs.getPoints().toArray()
-         for (p in a) { a[p].$self = undefined }
-         multiplicationRequest = {
-           points: a,
-           mulBy: {
-             r: parseInt($("#r").val()),
-             i: parseInt($("#i").val())
-           }
-         }
-         console.log(multiplicationRequest)
-         console.log(JSON.stringify(multiplicationRequest))
-         $.ajax({
-           url: "/complex",
-           contentType: "application/json",
-           method: "POST",
-           data: JSON.stringify(multiplicationRequest),
-           success: function(data) {
-             console.log(data)
-             var points = $.parseJSON(data);
-             for (i in points) {
-               pjs.addPoint(points[i].r, points[i].i);
-             }
-            }
-          })
-       }
-       $(function() {
-
-       })
-       </script>
+  <script src="/static/js/complexplane.js"></script>
   <style type="text/css">
     body {
        -webkit-touch-callout: none;
@@ -66,6 +23,8 @@
   <canvas  id="complexplane" data-processing-sources="/static/complexplane/complexplane.pde"></canvas>
   <label>r</label> <input id="r" type="text" title="r">
   <label>i</label> <input id="i" type="text" title="i">
-  <button type="button" id="loadPoints" onclick="drawPoints('complexplane')"> Multiply! </button>
+  <button type="button" id="mulBy" onclick="multiplyPoints()"> Multiply! </button>
+  <button type="button" id="clear" onclick="clearPoints()"> Clear points! </button>
+
 </body>
 </html>

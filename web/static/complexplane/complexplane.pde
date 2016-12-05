@@ -54,30 +54,55 @@ ArrayList points;
  }
 
  void mouseClicked() {
-   addPoint((mouseX-trX)/pxUnit,(trY-mouseY)/pxUnit);
+   addPoint((mouseX-trX)/pxUnit,(trY-mouseY)/pxUnit, false);
  }
+
+ void clearPoints() {
+   points = new ArrayList();
+ }
+
 
  ArrayList getPoints() {
-    return points;
+   ArrayList result = new ArrayList();
+   for (int i = 0; i<points.size(); i++) {
+     Point p = ((Point)points.get(i));
+     if (!p.calculated) {
+       result.add(p);
+     }
+   }
+    return result;
  }
 
- Point addPoint(float x, float y) {
-   Point pt = new Point(x,y);
+ Point addPoint(float x, float y, boolean calculated) {
+   Point pt = new Point(x,y,calculated);
    points.add(pt);
    return pt;
  }
 
  class Point {
    float r,i;
-   Point(float x, float y) { this.r=x; this.i=y; }
+   public boolean calculated;
+
+   Point(float x, float y, boolean calculated) { this.r=x; this.i=y; this.calculated = calculated; }
    void draw() {
-     stroke(0,0,0);
+     if (calculated){
+       stroke(0,0,255);
+     } else {
+        stroke(0,0,0);
+     }
      line(r * pxUnit, i * pxUnit,0,0);
-     stroke(255,0,0);
-     fill(255,0,0);
+    if (calculated) {
+       stroke(0,255,0);
+       fill(0,255,0);
+     } else {
+       stroke(255,0,0);
+       fill(255,0,0);
+      }
      ellipse(r * pxUnit,i*pxUnit,2,2);
      scale(1,-1);
      text("["+r+","+i+"]",5+r*pxUnit,5-i*pxUnit);
      scale(1,-1);
+   }  
  }
- }
+ 
+  
