@@ -6,22 +6,23 @@ function clearPoints() {
   pjs.clearPoints();
 };
 
-function multiplyPoints() {
+function calculatePoints(operator) {
   var pjs = Processing.getInstanceById("complexplane");
    a = pjs.getPoints().toArray()
    for (p in a) { a[p].$self = undefined }
-   multiplicationRequest = {
+   calculationRequest = {
      points: a,
+     operator: operator,
      mulBy: {
        r: parseInt($("#mulR").val()),
        i: parseInt($("#mulI").val())
      }
    }
    $.ajax({
-     url: "/mul",
+     url: "/calc",
      contentType: "application/json",
      method: "POST",
-     data: JSON.stringify(multiplicationRequest),
+     data: JSON.stringify(calculationRequest),
      success: function(data) {
         console.log(data)
        var points = $.parseJSON(data);

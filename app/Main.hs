@@ -7,7 +7,7 @@ import Happstack.Server
 import Debug.Trace
 import Text.JSON.Generic
 import Complex
-import CalculationServices
+import CalculationService
 import GHC.Generics
 import Control.Concurrent.MVar (readMVar)
 

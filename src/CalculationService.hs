@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings, DeriveGeneric, DeriveAnyClass #-}
 
-module CalculationServices where
+module CalculationService where
 
 import Complex
 import qualified Data.ByteString.Lazy.Char8 as L
@@ -22,8 +22,6 @@ instance ToJSON Complex where
       "r" .= r,
       "i"  .= i]
 
------ |Multiplication Service
-------------------------------
 
 data CalculationRequest = CalculationRequest {
     points :: [Complex],
@@ -40,6 +38,7 @@ instance FromJSON CalculationRequest where
 
 calculate :: CalculationRequest -> [Complex]
 calculate (CalculationRequest points "*" operand) = map (|*| operand) points
+calculate (CalculationRequest points "/" operand) = map (</> operand) points
 
 decodeCalculationRequest :: L.ByteString -> Either String CalculationRequest
 decodeCalculationRequest body = eitherDecode body :: Either String CalculationRequest
