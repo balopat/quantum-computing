@@ -10,25 +10,27 @@ import qualified Data.ByteString.Lazy.Char8 as L
 main :: IO ()
 main = hspec $
   describe "CalculationServices" $ do
-    it "should parse MultiplicationRequest from JSON" $ do
-      let jsonString = L.pack "{\"points\":[{\"r\":22.8,\"i\":5.3},{\"r\":17.4,\"i\":-6.7}],\"mulBy\":{\"r\":3,\"i\":3}}"
-      A.eitherDecode jsonString `shouldBe` Right
-                                              (MultiplicationRequest [
-                                                            Cartesian 22.8 5.3
-                                                            ,Cartesian 17.4 (-6.7)
-                                                            ]
-                                                            (Cartesian 3 3))
 
+    describe "common utilities" $ do
+      it "should parse Complex from JSON" $ do
+          let jsonString = L.pack "{\"r\":22.8,\"i\":5.3}"
+          A.eitherDecode jsonString `shouldBe` Right (Cartesian 22.8 5.3)
 
-    it "should parse Complex from JSON" $ do
-      let jsonString = L.pack "{\"r\":22.8,\"i\":5.3}"
-      A.eitherDecode jsonString `shouldBe` Right (Cartesian 22.8 5.3)
-
-
-    it "should multiply all numbers and return the array of them" $ do
-      let mulReq = MultiplicationRequest [
-                    Cartesian 3.0 4.0
-                    ,Cartesian 4.0 5.0
-                    ]
-                    (Cartesian 3 3)
-      eval mulReq `shouldBe` [Cartesian (-3.0) 21, Cartesian (-3.0) 27 ]
+    describe "MultiplicationService" $ do
+      it "should parse CalculationRequest from JSON" $ do
+        let jsonString = L.pack "{\"points\":[{\"r\":22.8,\"i\":5.3},{\"r\":17.4,\"i\":-6.7}],\"operator\":\"*\", \"operand\":{\"r\":3,\"i\":3}}"
+        A.eitherDecode jsonString `shouldBe` Right
+                                                (CalculationRequest [
+                                                              Cartesian 22.8 5.3
+                                                              ,Cartesian 17.4 (-6.7)
+                                                              ]
+                                                              "*"
+                                                              (Cartesian 3 3))
+      it "should multiply all numbers and return the array of them" $ do
+        let mulReq = CalculationRequest [
+                      Cartesian 3.0 4.0
+                      ,Cartesian 4.0 5.0
+                      ]
+                      "*"
+                      (Cartesian 3 3)
+        calculate mulReq `shouldBe` [Cartesian (-3.0) 21, Cartesian (-3.0) 27 ]

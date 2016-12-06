@@ -22,27 +22,35 @@ instance ToJSON Complex where
       "r" .= r,
       "i"  .= i]
 
+----- |Multiplication Service
+------------------------------
 
-data MultiplicationRequest = MultiplicationRequest {
+data CalculationRequest = CalculationRequest {
     points :: [Complex],
-    mulBy :: Complex
+    operator :: String,
+    operand :: Complex
 } deriving (Show, Eq, Generic, ToJSON)
 
-instance FromJSON MultiplicationRequest where
-  parseJSON = withObject "MultiplicationRequest" $ \o -> do
+instance FromJSON CalculationRequest where
+  parseJSON = withObject "CalculationRequest" $ \o -> do
     points <- o .: "points"
-    mulBy  <- o .: "mulBy"
-    return (MultiplicationRequest points mulBy)
+    operator <- o .: "operator"
+    operand  <- o .: "operand"
+    return (CalculationRequest points operator operand)
 
-eval :: MultiplicationRequest -> [Complex]
-eval (MultiplicationRequest points mulBy) = map (|*| mulBy) points
+calculate :: CalculationRequest -> [Complex]
+calculate (CalculationRequest points "*" operand) = map (|*| operand) points
 
-decodeMulReq :: L.ByteString -> Either String MultiplicationRequest
-decodeMulReq body = eitherDecode body :: Either String MultiplicationRequest
+decodeCalculationRequest :: L.ByteString -> Either String CalculationRequest
+decodeCalculationRequest body = eitherDecode body :: Either String CalculationRequest
 
-evalMulReq :: Either String MultiplicationRequest -> String
-evalMulReq (Right mulReq) = L.unpack $ encode $ toJSON (eval mulReq)
-evalMulReq (Left err)  = err
+calculateRequest :: Either String CalculationRequest -> String
+calculateRequest (Right mulReq) = L.unpack $ encode $ toJSON (calculate mulReq)
+calculateRequest (Left err)  = err
 
-handleMultiplicationRequest :: L.ByteString ->  String
-handleMultiplicationRequest body = evalMulReq (decodeMulReq body)
+handleCalculationRequest :: L.ByteString ->  String
+handleCalculationRequest body = calculateRequest (decodeCalculationRequest body)
+
+
+----- |Division Service
+------------------------------
