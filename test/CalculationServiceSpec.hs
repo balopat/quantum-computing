@@ -16,7 +16,7 @@ main = hspec spec
 spec :: Spec
 spec = do
   describe "CalculationService" $ do
-    it "should parse Complex from dJSON" $ do
+    it "should parse Complex from JSON" $ do
         let jsonString = L.pack "{\"r\":22.8,\"i\":5.3}"
         A.eitherDecode jsonString `shouldBe` Right (Cartesian 22.8 5.3)
 

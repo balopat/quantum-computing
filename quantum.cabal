@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     CalculationService, Complex
+  exposed-modules:     CalculationService, Complex, Vector
   build-depends:       base >= 4.7
                       , text
                       , happstack-server
