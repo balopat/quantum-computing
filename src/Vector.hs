@@ -6,3 +6,7 @@ add [] [] = []
 add a b = if length a /= length b then
               error "Length are not equal"
           else zipWith (<+>) a b
+
+inv:: [Complex] -> [Complex]
+inv [] = []
+inv xs = [Cartesian (-a) (-b) | (Cartesian a b) <- xs]
