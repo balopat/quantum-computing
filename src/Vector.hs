@@ -10,3 +10,7 @@ add a b = if length a /= length b then
 inv:: [Complex] -> [Complex]
 inv [] = []
 inv xs = [Cartesian (-a) (-b) | (Cartesian a b) <- xs]
+
+scalar:: Complex -> [Complex] -> [Complex]
+scalar _ [] = []
+scalar s xs = [ s |*| x | x <- xs]

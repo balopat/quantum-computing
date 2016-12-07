@@ -20,6 +20,11 @@ spec = do
         (V.inv [ Cartesian 1 2, Cartesian (-2) 3]) `shouldBe` [ Cartesian (-1) (-2), Cartesian 2 (-3)]
       it "inverse of empty vector is empty vector" $ do
           (V.inv []) `shouldBe` []
+    describe "Vector.scalar:" $ do
+      it "should multiply a vector's elements" $ do
+        (V.scalar (Cartesian (-3) 0) [ Cartesian 1 2, Cartesian (-2) 3]) `shouldBe` [ Cartesian (-3) (-6), Cartesian 6 (-9)]
+      it "product of any scalar with empty vector is empty vector" $ do
+          (V.scalar (Cartesian 100 1) []) `shouldBe` []
 
 
 main::IO()
