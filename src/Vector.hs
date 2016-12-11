@@ -14,3 +14,8 @@ inv xs = [Cartesian (-a) (-b) | (Cartesian a b) <- xs]
 scalar:: Complex -> [Complex] -> [Complex]
 scalar _ [] = []
 scalar s xs = [ s |*| x | x <- xs]
+
+
+
+inner:: [Complex] -> [Complex] -> Complex
+inner [] [] = Cartesian 0 0  

@@ -24,7 +24,10 @@ spec = do
       it "should multiply a vector's elements" $ do
         (V.scalar (Cartesian (-3) 0) [ Cartesian 1 2, Cartesian (-2) 3]) `shouldBe` [ Cartesian (-3) (-6), Cartesian 6 (-9)]
       it "product of any scalar with empty vector is empty vector" $ do
-          (V.scalar (Cartesian 100 1) []) `shouldBe` []
+        (V.scalar (Cartesian 100 1) []) `shouldBe` []
+    describe "Vector.inner:" $ do
+      it "inner prodcut of empty vectors should be empty vector" $ do
+        (V.inner [] []) `shouldBe` Cartesian 0 0
 
 
 main::IO()
