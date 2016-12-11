@@ -57,12 +57,13 @@ spec = do
 
       it "the product of matrices A (m x p) mul B (p x n) (j,k) = Σ(h=0->n-1) A[j,h] * B[h,k] " $ do
         let a = (M.matrix [[Cartesian 3 2, Cartesian 0 0, Cartesian 5 (-6)],
+                           [Cartesian 1 0, Cartesian 4 2, Cartesian 0 1],
+                           [Cartesian 1 0, Cartesian 4 2, Cartesian 0 1],
                            [Cartesian 1 0, Cartesian 4 2, Cartesian 0 1]])
             b = (M.matrix [[Cartesian 5 0, Cartesian 2 (-1)],
                            [Cartesian 0 0, Cartesian 4 5],
                            [Cartesian 7 (-4), Cartesian 2 0]])
-        (M.mul a b) `shouldBe` (M.matrix [[Cartesian 26 (-52), Cartesian 18 (-11)],
-                                          [Cartesian 9 7, Cartesian 8 29]])
+        (M.mul a b) `shouldBe` (M.matrix [[Cartesian {r = 26.0, i = -52.0},Cartesian {r = 18.0, i = -11.0}],[Cartesian {r = 9.0, i = 7.0},Cartesian {r = 8.0, i = 29.0}],[Cartesian {r = 9.0, i = 7.0},Cartesian {r = 8.0, i = 29.0}],[Cartesian {r = 9.0, i = 7.0},Cartesian {r = 8.0, i = 29.0}]])
 main::IO()
 main = do
   hspec spec

@@ -38,6 +38,6 @@ mul:: Matrix -> Matrix -> Matrix
 mul (Cnm [] 0 0) (Cnm [] 0 0) = (Cnm [] 0 0)
 mul (Cnm  a n1 m1) mb@(Cnm b n2 m2) = if (m1 == n2) then
        let trB = mx (transpose mb) in
-       (matrix [[ foldl (\acc new -> acc <+> new) (Cartesian 0 0) (zipWith (|*|) (a !! j) (trB !! i))  | i <- [0..n1-1]] | j <- [0..m2-1]])
+       (matrix [[ Complex.sum (zipWith (|*|) (a !! j) (trB !! i))  | i <- [0..m2-1]] | j <- [0..n1-1]])
     else
       error  ("Matrices are not compatible for multiplication: (" ++ (show n1) ++ "x" ++ (show m1) ++ ") * ("  ++ (show n2) ++ "x" ++ (show m2) ++ ")")
