@@ -18,4 +18,8 @@ scalar s xs = [ s |*| x | x <- xs]
 
 
 inner:: [Complex] -> [Complex] -> Complex
-inner [] [] = Cartesian 0 0  
+inner [] [] = Cartesian 0 0
+inner v1 v2 = if (length v1 /= length v2) then
+                error ("Length are not equal for inner product: " ++ show(length v1) ++ " vs " ++ show(length v2))
+              else
+                Complex.sum $ zipWith (|*|) (map Complex.conj v1) v2
