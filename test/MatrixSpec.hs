@@ -64,6 +64,12 @@ spec = do
                            [Cartesian 0 0, Cartesian 4 5],
                            [Cartesian 7 (-4), Cartesian 2 0]])
         (M.mul a b) `shouldBe` (M.matrix [[Cartesian {r = 26.0, i = -52.0},Cartesian {r = 18.0, i = -11.0}],[Cartesian {r = 9.0, i = 7.0},Cartesian {r = 8.0, i = 29.0}],[Cartesian {r = 9.0, i = 7.0},Cartesian {r = 8.0, i = 29.0}],[Cartesian {r = 9.0, i = 7.0},Cartesian {r = 8.0, i = 29.0}]])
+      it "the product of matrix by vector should be the same as multiplying by a single row matrix " $ do
+          let a = (M.matrix [[Cartesian 3 2, Cartesian 0 0, Cartesian 5 (-6)],
+                             [Cartesian 1 0, Cartesian 4 2, Cartesian 0 1]])
+              b = [Cartesian 5 0, Cartesian 0 0, Cartesian 7 (-4)]
+          (M.vmul a b) `shouldBe` [Cartesian {r = 26.0, i = -52.0},Cartesian {r = 9.0, i = 7.0}]
+
 main::IO()
 main = do
   hspec spec

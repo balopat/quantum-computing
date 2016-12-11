@@ -1,4 +1,4 @@
-module Matrix (matrix, add, inv, scalar, Matrix, mul, transpose) where
+module Matrix (matrix, add, inv, scalar, Matrix, mul, transpose, vmul) where
 import Complex
 import qualified Vector as V
 import  Control.Exception
@@ -41,3 +41,6 @@ mul (Cnm  a n1 m1) mb@(Cnm b n2 m2) = if (m1 == n2) then
        (matrix [[ Complex.sum (zipWith (|*|) (a !! j) (trB !! i))  | i <- [0..m2-1]] | j <- [0..n1-1]])
     else
       error  ("Matrices are not compatible for multiplication: (" ++ (show n1) ++ "x" ++ (show m1) ++ ") * ("  ++ (show n2) ++ "x" ++ (show m2) ++ ")")
+
+vmul :: Matrix -> [Complex] -> [Complex]
+vmul a v = head $ mx $ transpose $ mul a (transpose (matrix [v]))
