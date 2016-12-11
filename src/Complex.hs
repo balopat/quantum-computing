@@ -50,3 +50,7 @@ toCartesian (Cartesian r i)   = Cartesian r i
 
 showPi :: Complex -> String
 showPi (Polar rho theta) = show(rho) ++ ", " ++ show(theta/pi) ++ "pi"
+
+sum :: [Complex] -> Complex
+sum [] = Cartesian 0 0
+sum xs = foldl (\acc new -> acc <+> new) (Cartesian 0 0) xs
