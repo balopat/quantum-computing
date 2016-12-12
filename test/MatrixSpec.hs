@@ -80,6 +80,21 @@ spec = do
         it "square matrix, where not all i,j: m[i][j] == conj(m[j][i]) is not hermitian" $ do
           (M.isHermitian (M.matrix [[Cartesian 1 0, Cartesian 2 2], [Cartesian 2 2, Cartesian 4 0]])) `shouldBe` False
 
+    describe "Matrix.isUnitary:" $ do
+        it "[] is unitary" $ do
+          (M.isUnitary (M.matrix [])) `shouldBe` True
+        it "non-square matrix is not unitary" $ do
+          (M.isUnitary (M.matrix [[Cartesian 1 2]])) `shouldBe` False
+        it "identity matrix (I, or M.id(n)) is unitary" $ do
+          (M.isUnitary (M.identity 3)) `shouldBe` True
+        it "-1 * identity matrix (-I, or scalar -1  (M.id(n))) is unitary" $ do
+          (M.isUnitary (M.scalar (Cartesian (-1) 0) (M.identity 5))) `shouldBe` True
+        it "square matrix, where adj(m) * (m) = I  is unitary" $ do
+          (M.isUnitary (M.matrix [[Cartesian (cos 15) 0, Cartesian (- sin 15) 0], [Cartesian (sin 15) 0, Cartesian (cos 15) 0]] )) `shouldBe` True
+        it "square matrix, where not adj(m) * (m) = I is not unitary" $ do
+          (M.isUnitary (M.matrix [[Cartesian 1 0, Cartesian 2 2], [Cartesian 2 2, Cartesian 4 0]])) `shouldBe` False
+
+
 main::IO()
 main = do
   hspec spec
