@@ -39,6 +39,9 @@ spec = do
       it "norm of a vector should be sqrt(<v,v>) " $ do
         (V.norm [Cartesian 0 1, Cartesian 1 0]) `shouldBe` sqrt 2
 
+    describe "Vector.dist:" $ do
+      it "distance of v1, v2 should be norm(v2-v1) " $ do
+        (V.dist [Cartesian 3 1, Cartesian 1 0, Cartesian 0 0] [Cartesian 2 1, Cartesian 2 (-1), Cartesian 0 1]) `shouldBe` 2.0
 
 main::IO()
 main = do

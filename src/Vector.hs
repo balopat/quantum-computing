@@ -28,3 +28,6 @@ inner v1 v2 = if (length v1 /= length v2) then
 norm :: [Complex] -> Double
 norm [] = 0
 norm v = sqrt (r (inner v v))
+
+dist :: [Complex] -> [Complex] -> Double
+dist v1 v2 = norm $ add v1 (inv v2)
