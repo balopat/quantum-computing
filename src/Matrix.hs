@@ -1,4 +1,4 @@
-module Matrix (matrix, add, inv, scalar, Matrix, mul, transpose, vmul) where
+module Matrix (matrix, add, inv, scalar, Matrix, mul, transpose, vmul, isHermitian) where
 import Complex
 import qualified Vector as V
 import  Control.Exception
@@ -44,3 +44,10 @@ mul (Cnm  a n1 m1) mb@(Cnm b n2 m2) = if (m1 == n2) then
 
 vmul :: Matrix -> [Complex] -> [Complex]
 vmul a v = head $ mx $ transpose $ mul a (transpose (matrix [v]))
+
+diag :: [[Complex]] -> Int -> [Complex]
+diag mx n = [ mx !! i !! i | i <- [0..n-1] ]
+
+isHermitian :: Matrix -> Bool
+isHermitian (Cnm [] 0 0) = True
+isHermitian (Cnm mx n m) = n == m &&  all (\(i,j) -> mx !! i !! j == (Complex.conj ( mx !! j !! i))) [ (i,j) | i <- [0..n-1], j <- [0..i]]

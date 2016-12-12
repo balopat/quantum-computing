@@ -70,6 +70,16 @@ spec = do
               b = [Cartesian 5 0, Cartesian 0 0, Cartesian 7 (-4)]
           (M.vmul a b) `shouldBe` [Cartesian {r = 26.0, i = -52.0},Cartesian {r = 9.0, i = 7.0}]
 
+    describe "Matrix.isHermitian:" $ do
+        it "[] is hermitian" $ do
+          (M.isHermitian (M.matrix [])) `shouldBe` True
+        it "non-square matrix is not hermitian" $ do
+          (M.isHermitian (M.matrix [[Cartesian 1 2]])) `shouldBe` False
+        it "square matrix, where all i,j: m[i][j] == conj(m[j][i]) is hermitian" $ do
+          (M.isHermitian (M.matrix [[Cartesian 1 0, Cartesian 2 2], [Cartesian 2 (-2), Cartesian 4 0]] )) `shouldBe` True
+        it "square matrix, where not all i,j: m[i][j] == conj(m[j][i]) is not hermitian" $ do
+          (M.isHermitian (M.matrix [[Cartesian 1 0, Cartesian 2 2], [Cartesian 2 2, Cartesian 4 0]])) `shouldBe` False
+
 main::IO()
 main = do
   hspec spec
