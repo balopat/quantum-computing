@@ -94,6 +94,23 @@ spec = do
         it "square matrix, where not adj(m) * (m) = I is not unitary" $ do
           (M.isUnitary (M.matrix [[Cartesian 1 0, Cartesian 2 2], [Cartesian 2 2, Cartesian 4 0]])) `shouldBe` False
 
+    describe "Matrix.tensor:" $ do
+      it "[] x [] = []" $ do
+        (M.tensor (M.matrix []) (M.matrix []) ) `shouldBe` M.matrix []
+      it "m1 x m2 (j,k) = m1[j/n,k/m] * m2[j Mod n, k Mod n]" $ do
+        let m1 = (M.matrix [[ Cartesian 1 2, Cartesian 2 3]
+                           ,[ Cartesian 1 1, Cartesian 0 0]])
+            m2 = (M.matrix [[ Cartesian 1 1, Cartesian 0 0 ],
+                            [ Cartesian 1 1, Cartesian 1 0 ],
+                            [ Cartesian 0 1, Cartesian 0 0 ]])
+            expected = (M.matrix [[ Cartesian (-1) 3, Cartesian 0 0, Cartesian (-1) 5, Cartesian 0 0],
+                                  [ Cartesian (-1) 3, Cartesian 1 2, Cartesian (-1) 5, Cartesian 2 3],
+                                  [ Cartesian (-2) 1, Cartesian 0 0, Cartesian (-3) 2, Cartesian 0 0],
+                                  [ Cartesian 0 2   , Cartesian 0 0, Cartesian 0 0   , Cartesian 0 0],
+                                  [ Cartesian 0 2   , Cartesian 1 1, Cartesian 0 0   , Cartesian 0 0],
+                                  [ Cartesian (-1) 1, Cartesian 0 0, Cartesian 0 0   , Cartesian 0 0]
+                                  ])
+        (M.tensor m1 m2) `shouldBe` expected
 
 main::IO()
 main = do

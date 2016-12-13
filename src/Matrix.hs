@@ -1,4 +1,4 @@
-module Matrix (matrix, add, inv, scalar, Matrix, mul, transpose, vmul, isHermitian, identity, isUnitary, adj, mconj) where
+module Matrix (matrix, add, inv, scalar, tensor, Matrix, mul, transpose, vmul, isHermitian, identity, isUnitary, adj, mconj) where
 import Complex
 import qualified Vector as V
 import  Control.Exception
@@ -7,7 +7,13 @@ data Matrix = Cnm {
     mx :: [[Complex]],
     n :: Int,
     m :: Int
-} deriving (Show, Eq)
+} deriving (Eq)
+
+showVec :: [Complex] -> [Char]
+showVec nums = (foldl (\acc next -> acc ++ show(next) ++ "\t")  "" nums)
+
+instance Show Matrix where
+  show (Cnm mx n m) = "Matrix: " ++ show(n) ++ "x" ++ show(m) ++ "\n" ++ (foldl (\acc next -> acc ++ (showVec next) ++ "\n") "" mx)
 
 matrix :: [[Complex]] -> Matrix
 matrix [] = Cnm [] 0 0
@@ -68,3 +74,7 @@ isHermitian (Cnm mx n m) = n == m &&  all (\(i,j) -> mx !! i !! j == (Complex.co
 isUnitary :: Matrix -> Bool
 isUnitary (Cnm [] 0 0) = True
 isUnitary mx@(Cnm _ n m) = n == m &&  ( (mul (Matrix.adj mx) mx) == identity n )
+
+tensor :: Matrix -> Matrix -> Matrix
+tensor (Cnm [] 0 0) (Cnm [] 0 0) = (Cnm [] 0 0)
+tensor (Cnm a m m_) (Cnm b n n_) = matrix [[ (a !! (j `div` n) !! (k `div` m)) |*| (b !! (j `mod` n) !! (k `mod` m)) | k <- [0..(m_ * n_ -1)] ] | j <- [0..(m*n-1)] ]

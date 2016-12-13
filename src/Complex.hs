@@ -8,7 +8,10 @@ import GHC.Generics
 
 data Complex =  Cartesian { r:: Double, i::Double } |
                 Polar { rho :: Double, theta::Double}
-                  deriving (Show,Eq)
+                  deriving (Eq)
+
+instance Show Complex where
+  show (Cartesian r i) = show(r)  ++ (if i /=0 then "+" ++ show(i) ++ "i" else "")
 
 readComplex :: String -> Complex
 readComplex s = let parts = splitOn " " s
