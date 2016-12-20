@@ -1,4 +1,4 @@
-module Matrix (matrix, add, inv, scalar, tensor, Matrix, mul, transpose, vmul, isHermitian, identity, isUnitary, adj, mconj, intMatrix, ivmul) where
+module Matrix where
 import Complex
 import qualified Vector as V
 import  Control.Exception
