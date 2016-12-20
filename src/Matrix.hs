@@ -1,4 +1,4 @@
-module Matrix (matrix, add, inv, scalar, tensor, Matrix, mul, transpose, vmul, isHermitian, identity, isUnitary, adj, mconj) where
+module Matrix (matrix, add, inv, scalar, tensor, Matrix, mul, transpose, vmul, isHermitian, identity, isUnitary, adj, mconj, intMatrix, ivmul) where
 import Complex
 import qualified Vector as V
 import  Control.Exception
@@ -7,19 +7,26 @@ data Matrix = Cnm {
     mx :: [[Complex]],
     n :: Int,
     m :: Int
-} deriving (Eq)
+} | Inm { imx :: [[Int]], n :: Int, m:: Int} deriving (Eq)
 
-showVec :: [Complex] -> [Char]
+showVec :: Show a => [a] -> [Char]
 showVec nums = (foldl (\acc next -> acc ++ show(next) ++ "\t")  "" nums)
 
 instance Show Matrix where
   show (Cnm mx n m) = "Matrix: " ++ show(n) ++ "x" ++ show(m) ++ "\n" ++ (foldl (\acc next -> acc ++ (showVec next) ++ "\n") "" mx)
+  show (Inm imx n m) = "Matrix: " ++ show(n) ++ "x" ++ show(m) ++ "\n" ++ (foldl (\acc next -> acc ++ (showVec next) ++ "\n") "" imx)
 
 matrix :: [[Complex]] -> Matrix
 matrix [] = Cnm [] 0 0
 matrix rows = let n = length rows
                   m = length (head rows) in
               assert (all (\row -> length row == m) rows) (Cnm rows n m)
+
+intMatrix :: [[Int]] -> Matrix
+intMatrix [] = Inm [] 0 0
+intMatrix rows = let n = length rows
+                     m = length (head rows) in
+                 assert (all (\row -> length row == m) rows) (Inm rows n m)
 
 
 add:: Matrix -> Matrix -> Matrix
@@ -39,6 +46,8 @@ scalar s (Cnm rows _ _) = matrix [[ s |*| x | x <- row] | row <- rows]
 transpose:: Matrix -> Matrix
 transpose (Cnm [] 0 0) = Cnm [] 0 0
 transpose (Cnm a n m) = matrix [[ a !! i !! j | i <- [0..n-1]] | j <- [0..m-1]]
+transpose (Inm [] 0 0) = Inm [] 0 0
+transpose (Inm a n m) = intMatrix [[ a !! i !! j | i <- [0..n-1]] | j <- [0..m-1]]
 
 mul:: Matrix -> Matrix -> Matrix
 mul (Cnm [] 0 0) (Cnm [] 0 0) = (Cnm [] 0 0)
@@ -47,9 +56,18 @@ mul (Cnm  a n1 m1) mb@(Cnm b n2 m2) = if (m1 == n2) then
        (matrix [[ Complex.sum (zipWith (|*|) (a !! j) (trB !! i))  | i <- [0..m2-1]] | j <- [0..n1-1]])
     else
       error  ("Matrices are not compatible for multiplication: (" ++ (show n1) ++ "x" ++ (show m1) ++ ") * ("  ++ (show n2) ++ "x" ++ (show m2) ++ ")")
+mul (Inm [] 0 0) (Inm [] 0 0) = (Inm [] 0 0)
+mul (Inm  a n1 m1) mb@(Inm b n2 m2) = if (m1 == n2) then
+       let trB = imx (transpose mb) in
+       (intMatrix [[ Prelude.sum (zipWith (*) (a !! j) (trB !! i))  | i <- [0..m2-1]] | j <- [0..n1-1]])
+    else
+      error  ("Matrices are not compatible for multiplication: (" ++ (show n1) ++ "x" ++ (show m1) ++ ") * ("  ++ (show n2) ++ "x" ++ (show m2) ++ ")")
 
 vmul :: Matrix -> [Complex] -> [Complex]
 vmul a v = head $ mx $ transpose $ mul a (transpose (matrix [v]))
+
+ivmul :: Matrix -> [Int] -> [Int] 
+ivmul a@(Inm _ _ _)  v = head $ imx $ transpose $ mul a (transpose (intMatrix [v]))
 
 
 identity :: Int -> Matrix
