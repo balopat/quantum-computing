@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, DeriveAnyClass #-}
+{-# LANGUAGE InstanceSigs, OverloadedStrings, DeriveAnyClass #-}
 
 module Complex where
 
@@ -10,6 +10,19 @@ data Complex =  Cartesian { r:: Double, i::Double } |
                 Polar { rho :: Double, theta::Double}
                   deriving (Eq)
 
+instance Num Complex where 
+  (+) :: Complex -> Complex -> Complex
+  (+) (Cartesian r1 i1) (Cartesian r2 i2) = Cartesian (r1 + r2) (i1 + i2)
+  (-) :: Complex -> Complex -> Complex
+  (-) (Cartesian r1 i1) (Cartesian r2 i2) = Cartesian (r1 - r2) (i1 - i2)
+  (*) :: Complex -> Complex -> Complex
+  (*) (Cartesian r1 i1) (Cartesian r2 i2) = Cartesian (r1 * r2 - i1 * i2) (r1 * i2 + r2 * i1)
+  (*) (Polar rho1 theta1) (Polar rho2 theta2) = Polar (rho1 * rho2) (theta1 + theta2)
+  negate :: Complex -> Complex
+  negate c = conj c 
+  fromInteger :: Integer -> Complex 
+  fromInteger i = Cartesian (fromInteger i) 0
+  
 instance Show Complex where
   show (Cartesian r i) = show(r)  ++ (if i /=0 then "+" ++ show(i) ++ "i" else "")
 
@@ -17,15 +30,8 @@ readComplex :: String -> Complex
 readComplex s = let parts = splitOn " " s
           in Cartesian (read (head parts)) (read (parts!!1))
 
-(<+>) :: Complex -> Complex -> Complex
-(Cartesian r1 i1) <+>  (Cartesian r2 i2) = Cartesian (r1 + r2) (i1 + i2)
 
-(<->) :: Complex -> Complex -> Complex
-(Cartesian r1 i1) <->  (Cartesian r2 i2) = Cartesian (r1 - r2) (i1 - i2)
 
-(|*|) :: Complex -> Complex -> Complex
-(Cartesian r1 i1) |*| (Cartesian r2 i2) = Cartesian (r1 * r2 - i1 * i2) (r1 * i2 + r2 * i1)
-(Polar rho1 theta1) |*| (Polar rho2 theta2) = Polar (rho1 * rho2) (theta1 + theta2)
 
 (</>) :: Complex -> Complex -> Complex
 (Cartesian r1 i1) </>  (Cartesian r2 i2) = Cartesian ((r1 * r2 + i1 * i2)/divisor) ((r2 * i1 - r1 * i2)/divisor)
@@ -53,7 +59,3 @@ toCartesian (Cartesian r i)   = Cartesian r i
 
 showPi :: Complex -> String
 showPi (Polar rho theta) = show(rho) ++ ", " ++ show(theta/pi) ++ "pi"
-
-sum :: [Complex] -> Complex
-sum [] = Cartesian 0 0
-sum xs = foldl (\acc new -> acc <+> new) (Cartesian 0 0) xs

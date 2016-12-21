@@ -41,7 +41,7 @@ inv (Cnm rows _ _) = matrix [[ Cartesian (-a) (-b) | (Cartesian a b) <- row] | r
 
 scalar:: Complex -> Matrix -> Matrix
 scalar _ (Cnm [] 0 0) = Cnm [] 0 0
-scalar s (Cnm rows _ _) = matrix [[ s |*| x | x <- row] | row <- rows]
+scalar s (Cnm rows _ _) = matrix [[ s * x | x <- row] | row <- rows]
 
 transpose:: Matrix -> Matrix
 transpose (Cnm [] 0 0) = Cnm [] 0 0
@@ -53,7 +53,7 @@ mul:: Matrix -> Matrix -> Matrix
 mul (Cnm [] 0 0) (Cnm [] 0 0) = (Cnm [] 0 0)
 mul (Cnm  a n1 m1) mb@(Cnm b n2 m2) = if (m1 == n2) then
        let trB = mx (transpose mb) in
-       (matrix [[ Complex.sum (zipWith (|*|) (a !! j) (trB !! i))  | i <- [0..m2-1]] | j <- [0..n1-1]])
+       (matrix [[ sum (zipWith (*) (a !! j) (trB !! i))  | i <- [0..m2-1]] | j <- [0..n1-1]])
     else
       error  ("Matrices are not compatible for multiplication: (" ++ (show n1) ++ "x" ++ (show m1) ++ ") * ("  ++ (show n2) ++ "x" ++ (show m2) ++ ")")
 mul (Inm [] 0 0) (Inm [] 0 0) = (Inm [] 0 0)
@@ -95,4 +95,4 @@ isUnitary mx@(Cnm _ n m) = n == m &&  ( (mul (Matrix.adj mx) mx) == identity n )
 
 tensor :: Matrix -> Matrix -> Matrix
 tensor (Cnm [] 0 0) (Cnm [] 0 0) = (Cnm [] 0 0)
-tensor (Cnm a m m_) (Cnm b n n_) = matrix [[ (a !! (j `div` n) !! (k `div` m)) |*| (b !! (j `mod` n) !! (k `mod` m)) | k <- [0..(m_ * n_ -1)] ] | j <- [0..(m*n-1)] ]
+tensor (Cnm a m m_) (Cnm b n n_) = matrix [[ (a !! (j `div` n) !! (k `div` m)) * (b !! (j `mod` n) !! (k `mod` m)) | k <- [0..(m_ * n_ -1)] ] | j <- [0..(m*n-1)] ]

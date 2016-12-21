@@ -37,7 +37,7 @@ instance FromJSON CalculationRequest where
     return (CalculationRequest points operator operand)
 
 calculate :: CalculationRequest -> [Complex]
-calculate (CalculationRequest points "*" operand) = map (|*| operand) points
+calculate (CalculationRequest points "*" operand) = map (* operand) points
 calculate (CalculationRequest points "/" operand) = map (</> operand) points
 
 decodeCalculationRequest :: L.ByteString -> Either String CalculationRequest

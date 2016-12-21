@@ -16,6 +16,6 @@ spec :: Spec
 spec = do
   describe "Complex" $ do
     it "should add tow Cartesian numbers" $ do
-        Cartesian 1 1 <+> Cartesian 2 (-3) `shouldBe` Cartesian 3 (-2)
+        Cartesian 1 1 + Cartesian 2 (-3) `shouldBe` Cartesian 3 (-2)
     it "should sum Cartesian numbers" $ do
-        Complex.sum [Cartesian 1 2, Cartesian 3 4, Cartesian 6 4] `shouldBe` Cartesian 10 10
+        sum [Cartesian 1 2, Cartesian 3 4, Cartesian 6 4] `shouldBe` Cartesian 10 10
