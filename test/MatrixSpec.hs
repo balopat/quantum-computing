@@ -34,7 +34,7 @@ spec = do
 
     describe "Matrix.transpose:" $ do
       it "transpose of empty matrix is empty matrix" $ do
-        M.transpose (M.matrix []) `shouldBe` (M.matrix [])
+        M.transpose (M.matrix []) `shouldBe` (M.matrix [] :: Matrix a)
 
       it "transpose of matrix should be switching the i,j coordinates for each element" $ do
         let a = (M.matrix [[Cartesian 3 2, Cartesian 0 0, Cartesian 5 (-6)],

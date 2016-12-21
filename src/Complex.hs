@@ -19,7 +19,7 @@ instance Num Complex where
   (*) (Cartesian r1 i1) (Cartesian r2 i2) = Cartesian (r1 * r2 - i1 * i2) (r1 * i2 + r2 * i1)
   (*) (Polar rho1 theta1) (Polar rho2 theta2) = Polar (rho1 * rho2) (theta1 + theta2)
   negate :: Complex -> Complex
-  negate c = conj c 
+  negate c = inv c 
   fromInteger :: Integer -> Complex 
   fromInteger i = Cartesian (fromInteger i) 0
   
@@ -40,6 +40,9 @@ readComplex s = let parts = splitOn " " s
 
 conj :: Complex -> Complex
 conj (Cartesian r i) = Cartesian r (-i)
+
+inv :: Complex -> Complex 
+inv (Cartesian r i) = Cartesian (-r) (-i)
 
 modulus :: Complex -> Double
 modulus (Cartesian r i) = sqrt $ r*r + i*i

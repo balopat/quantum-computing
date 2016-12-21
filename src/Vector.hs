@@ -1,17 +1,17 @@
 module Vector where
 import Complex
 
-add:: [Complex] -> [Complex] -> [Complex]
+add:: (Num t) => [t] -> [t] -> [t]
 add [] [] = []
 add a b = if length a /= length b then
               error "Length are not equal"
           else zipWith (+) a b
 
-inv:: [Complex] -> [Complex]
+inv:: (Num t) => [t] -> [t]
 inv [] = []
-inv xs = [Cartesian (-a) (-b) | (Cartesian a b) <- xs]
+inv xs = [(-x) | x <- xs]
 
-scalar:: Complex -> [Complex] -> [Complex]
+scalar:: (Num t) =>  t -> [t] -> [t]
 scalar _ [] = []
 scalar s xs = [ s * x | x <- xs]
 
@@ -30,4 +30,4 @@ norm [] = 0
 norm v = sqrt (r (inner v v))
 
 dist :: [Complex] -> [Complex] -> Double
-dist v1 v2 = norm $ add v1 (inv v2)
+dist v1 v2 = norm $ add v1 (Vector.inv v2)
