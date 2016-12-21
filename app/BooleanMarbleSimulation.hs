@@ -23,8 +23,8 @@ getLines n
     linesAfter <- getLines (n-1) 
     return ([nextLine] ++ linesAfter)
 
-validateAllColumnSumsAreOne :: M.Matrix -> Bool
-validateAllColumnSumsAreOne m@(M.Inm _ _ _) = all (\row -> 1 == (Prelude.sum row)) (M.imx (M.transpose m))
+validateAllColumnSumsAreOne :: M.Matrix Int -> Bool
+validateAllColumnSumsAreOne m@(M.Matrix _ _ _) = all (\row -> 1 == (Prelude.sum row)) (M.mx (M.transpose m))
 
 main :: IO ()
 main = do
@@ -32,7 +32,7 @@ main = do
     
   n <- read <$> getLine
   print $ "Enter the state transition matrix (" ++ show(n) ++ "x" ++ show(n) ++"):"
-  mx  <- M.intMatrix . map (\line -> map (readBool) (splitOn "," line)) <$> (getLines n)
+  mx  <- M.matrix . map (\line -> map (readBool) (splitOn "," line)) <$> (getLines n)
   print mx
   
   if (validateAllColumnSumsAreOne mx) then print "Matrix is valid!" else error "Matrix is invalid, not all column sums are 1"
@@ -53,5 +53,5 @@ main = do
   
   print "and the final state:" 
   
-  print (M.ivmul pow state) 
+  print (M.vmul pow state) 
   
